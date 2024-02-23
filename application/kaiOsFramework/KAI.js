@@ -1,9 +1,9 @@
 // ------------------------------------
-// App Object
+// KAI Object
 // ------------------------------------
 
 
-let App = {
+let KAI = {
   // ----------------------------------
   lang: 'fr',
   // ----------------------------------
@@ -12,15 +12,27 @@ let App = {
   vars: {},
   // ----------------------------------
   states:{},
-  // ----------------------------------
-  // Method to change state
+  // KaiOs_Spinner --------------------
+  "spinner" : {
+    "on": function(text) {
+      $("#KAI_spinner").show();
+      // If some text is provided, we write it in the spinner
+      if (text) {
+        $("#KAI_spinnerText").html(text);
+      }
+    },
+    "off" : function() {
+      $("#KAI_spinner").hide();
+    }
+  },
+  // Method to change state -----------
   newState: function(newState) {
     // If newState exists -------------
     if (this.states.hasOwnProperty(newState)){
       // Change current state ---------
-      console.log('"App.newState" : current state : "' + this.currentState + '"');
+      console.log('"KAI.newState" : current state : "' + this.currentState + '"');
       this.currentState = newState;
-      console.log('"App.newState" : new state : "' + newState + '"');
+      console.log('"KAI.newState" : new state : "' + newState + '"');
       // Display softKeys
       $('#SoftLeft').html(this.states[newState].softKeys
                         && this.states[newState].softKeys[this.lang]
@@ -31,28 +43,28 @@ let App = {
       $('#SoftRight').html(this.states[newState].softKeys
                         && this.states[newState].softKeys[this.lang]
                         && this.states[newState].softKeys[this.lang][2]);
-      console.log('"App.newState" : softKeys setted');
+      console.log('"KAI.newState" : softKeys set');
       // Display zones ----------------
       Object.keys(this.states[newState].display).forEach(function(key) {
-        if (App.states[newState].display[key]) {
+        if (KAI.states[newState].display[key]) {
           $(key).show();
         }
         else {
           $(key).hide();
         }
       });
-      console.log('"App.newState" : hide/show zones (display) ok');
+      console.log('"KAI.newState" : hide/show zones (display) ok');
       // Run afterStateChange callback
       if (this.states[newState].hasOwnProperty("afterStateChange")) {
         // ------------------------
         // TBD : check if function
         // ------------------------
         this.states[newState].afterStateChange();
-        console.log('"App.newState" : afterStateChange callback ok');
+        console.log('"KAI.newState" : afterStateChange callback ok');
       }
     }
     else {
-      console.log('"App.newState" error : "' + newState + '" state do not exists in "App.states"');
+      console.log('"KAI.newState" error : "' + newState + '" state do not exists in "KAI.states"');
     }
   },
   // ----------------------------------
@@ -66,11 +78,11 @@ let App = {
         this.states[name].events['keyup.Home'] = this.states[name].events['keyup.SoftLeft'];
         // For ArrowRight emulation on PC
         this.states[name].events['keyup.End'] = this.states[name].events['keyup.SoftRight'];
-        console.log('"App.addState" : state "' + name + '" added');
+        console.log('"KAI.addState" : state "' + name + '" added');
       }
-      else console.log('"App.addState" error : "stateObject" do not have a "events" property.');
+      else console.log('"KAI.addState" error : "stateObject" do not have a "events" property.');
     }
-    else console.log('"App.addState" error : "App" do not have a "states" property.');
+    else console.log('"KAI.addState" error : "KAI" do not have a "states" property.');
   }
 };
 
@@ -87,23 +99,23 @@ document.addEventListener("keyup", event => {
 	if ((keyTs - lastKeyTs) > minDeltaBetweenKeys) {
     lastKeyTs = keyTs;
     // We look for the function for that key in the current status
-    console.log("- current state : " + App.currentState);
-    if (App.states.hasOwnProperty(App.currentState)) {
+    console.log("- current state : " + KAI.currentState);
+    if (KAI.states.hasOwnProperty(KAI.currentState)) {
 
-      if (App.states[App.currentState].hasOwnProperty("events")) {
-        if (App.states[App.currentState].events[detailedEvent]) {
+      if (KAI.states[KAI.currentState].hasOwnProperty("events")) {
+        if (KAI.states[KAI.currentState].events[detailedEvent]) {
           // We run the function for that event
-          App.states[App.currentState].events[detailedEvent](event);
+          KAI.states[KAI.currentState].events[detailedEvent](event);
           console.log("\"" + detailedEvent + "\" event treated");
         }
         else {
           // We run the "Default" key
-          App.states[App.currentState].events["keyup.Default"](event);
+          KAI.states[KAI.currentState].events["keyup.Default"](event);
           console.log('"' + detailedEvent + '" event treated (as "keyup.Default")');
         }
       }
     }
-    else console.log("there is no App.states for current state");
+    else console.log("there is no KAI.states for current state");
   }
   else {
     console.log("Anti-bounce : invalid key");
@@ -136,23 +148,5 @@ const toastr = {
 	}
 }
 
-// -----------------------------------------------------------------
-// KaiOs_Spinner
-// -----------------------------------------------------------------
 
-const KAI_spinner = {
-  "on": function(text) {
-    $("#KAI_spinner").show();
-    // If some text is provided, we write it in the spinner
-    if (text) {
-      $("#KAI_spinnerText").html(text);
-    }
-  },
-  "off" : function() {
-    $("#KAI_spinner").hide();
-  }
-}
-
-
-
-console.log("kaiOsApp.js loaded");
+console.log("kai.js loaded");

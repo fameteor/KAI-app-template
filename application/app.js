@@ -187,7 +187,7 @@ let getTranslation = function(word,dictionnary) {
 		};
 		// Send request
 		httpRequest.send();
-		KAI.spinner.on();
+		KAI.spinner.on("recherche en cours...");
 	}
 	else toastr.warning("Pas d'accès réseau, vérifier que les données mobiles ou le wifi sont autorisés");
   //

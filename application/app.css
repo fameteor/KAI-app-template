@@ -1,0 +1,68 @@
+/*
+L'écran fait 240x320 pixels.
+1) Avec la partie status Kaios :
+- la partie status Kaios fait 25 px de haut
+- La partie "App" fait 265 px de haut,
+    - Le header, c'est à dire l'en tête de l'application fait 20 pixels de haut,
+    - le reste fait donc 245 px de haut
+- Les sofkeys font 30 px de haut
+
+2) en Full screen :
+- La partie "App" fait 290 px de haut,
+- Les sofkeys font 30 px de haut
+*/
+
+
+#searchWord{
+  width:230px;
+  border-radius: 5px;
+  background: #fff;
+  border: 1px solid #ccc;
+  outline:none;
+  padding: 6px;
+  font-size: 16px;
+  margin:5px;
+}
+
+#searchWord:focus{
+  border:2px solid #03af30;
+  box-shadow: 0px 0px 3px 1px #03af30;
+}
+
+#translations {width:240px;
+	/* 265px if fullscreen or 235px */
+	height:245px;
+	background-color: #EEEEEE;
+	color:#000080;
+	overflow-y:auto;}
+
+p {  margin-top: 0; margin-bottom: 0em; }
+p.lang {font-weight: bold;font-size:14px;background-color:#03af30;color:#FFFFFF}
+p.result {background-color:#dddddd;}
+.headword_attributes {font-weight: bold;}
+.flexion {font-style: italic; font-size: 12px;}
+.wordclass {font-size: 12px;}
+.topic {font-style: italic; font-size: 12px;}
+.sense {font-style: italic; font-size: 12px;}
+div#input {background-color: #EEEEEE;}
+
+table.translations {
+  border-collapse: collapse;
+  width:100%;
+  margin-bottom:5px;
+  margin-left:5px;
+  font-size: 12px;
+}
+
+tr {
+  border-top: 1pt dotted #888888;
+}
+
+#dictionnariesListSelector {
+	width:240px;
+	/* 265px if fullscreen or 235px */
+	height:200px;
+	background-color: #EEEEEE;
+	color:#000080;
+	overflow-y:auto;
+}

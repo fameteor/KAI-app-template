@@ -1,0 +1,24 @@
+{
+  "version": "0.0.5",
+  "name": "KAI-template",
+  "description": "KAI-template",
+  "type": "privileged",
+  "permissions": {"systemXHR": {}},
+  "launch_path": "/index.html",
+  "icons": {
+    "56": "/icons/template_56.png",
+    "112": "/icons/template_112.png"
+  },
+  "developer": {
+    "name": "KaiOS Team",
+    "url": "https://www.kaiostech.com"
+  },
+  "locales": {
+    "fr-FR": {
+      "name": "KAI-template",
+      "subtitle": "KAI-template",
+      "description": "KAI-template"
+    }
+  },
+  "default_locale": "fr-FR"
+}

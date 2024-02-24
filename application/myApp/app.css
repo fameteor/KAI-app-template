@@ -36,6 +36,13 @@ L'écran fait 240x320 pixels.
 	color:#000080;
 	overflow-y:auto;}
 
+#history {width:240px;
+	/* 265px if fullscreen or 235px */
+	height:245px;
+	background-color: #EEEEEE;
+	color:#000080;
+	overflow-y:auto;}
+
 p {  margin-top: 0; margin-bottom: 0em; }
 p.lang {font-weight: bold;font-size:14px;background-color:#03af30;color:#FFFFFF}
 p.result {background-color:#dddddd;}

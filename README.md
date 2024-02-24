@@ -1,6 +1,11 @@
 # KaiOs application template
+Contains :
+- `KAI` object : to build a KaiOs application as a state machine.
+- Fontawesome 5 fonts.
+- jquery 3.5.1
+
 ## `KAI` object
-Contained in `/kaiOsFramework/KAI.js` file. It contains all what is necessary to build a KaiOs application as a state machine :
+Contained in `/KAI/KAI.js` file. It contains all what is necessary to build a KaiOs application as a state machine :
 - the user's HTML will be written in the `index.html` file in the `div` whose `id` is `app`.
 - the user's javascript will be written in the `app.js` file.
 
@@ -28,7 +33,7 @@ To change the state to a specific change, simply call `KAI.newState(stateName);`
 - be ready to act for the right events only.
 
 ## `KAI_choiceList` object
-contained in `/kaiOsFramework/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item using the up or bottom arrow key.
+contained in `/KAI/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item using the up or bottom arrow key.
 
 ## `KAI.spinner` object
 The `KAI.spinner` object has 2 methods :

@@ -27,10 +27,10 @@ To change the state to a specific change, simply call `KAI.newState(stateName);`
 - run the right callback,
 - be ready to act for the right events only.
 
-## `KaiOsChoiceList` object
-contained in `/kaiOsFramework/KaiOsChoiceList.js` file). This object is used to build KaiOs choice list to choose an item using the up or bottom arrow key.
+## `KAI_choiceList` object
+contained in `/kaiOsFramework/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item using the up or bottom arrow key.
 
-## KAI.spinner object
+## `KAI.spinner` object
 The `KAI.spinner` object has 2 methods :
 - `KAI.spinner.on(text)` : overlays the application with a rotating spinner optionnaly an explanation text if `text` is provided. It is used to indicate a waiting state to the user. The `text` parameter may contain HTML.
 - `KAI.spinner.off()` : remove the spinner overlay.

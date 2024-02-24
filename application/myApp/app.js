@@ -170,7 +170,7 @@ let dictionnariesListOptions = {
 	"targetDomSelector" : 			"#dictionnariesList"
 }
 
-const dictionnaries = new KaiOsChoiceList(dictionnariesList,dictionnariesListOptions);
+const dictionnaries = new KAI_choiceList(dictionnariesList,dictionnariesListOptions);
 
 // State machine initialisation ----------------------
 window.onload = function() {

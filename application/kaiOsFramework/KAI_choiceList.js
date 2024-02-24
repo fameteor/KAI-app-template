@@ -1,20 +1,20 @@
 // -----------------------------------------------------------------
-// KaiOsChoiceList
+// KAI_choiceList
 // -----------------------------------------------------------------
 
-const KaiOsChoiceList = function(list,options) {
+const KAI_choiceList = function(list,options) {
 	this.options = options;
 	this.list = list;
 	this.currentIndex = (this.options && this.options.initialSelectionIndex) ? this.options.initialSelectionIndex() : 0;
 }
 
-KaiOsChoiceList.prototype.verticalScrollToActiveElement = function() {
+KAI_choiceList.prototype.verticalScrollToActiveElement = function() {
 	if ($("tr[id^=" + this.options.selectedItemIdPrefix + "].active") && $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position()) document.getElementById("dictionnariesListSelector").scrollTo({top: $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position().top, behavior: 'smooth'});
 	// Other possibiity :
 	// document.getElementById("root").scrollTo({top: this.currentIndex * 70, behavior: 'smooth'});
 }
 
-KaiOsChoiceList.prototype.refreshSelection = function() {
+KAI_choiceList.prototype.refreshSelection = function() {
 	// Refresh selection
 	if (this.options.selectedItemIdPrefix) {
 		const that = this;
@@ -34,28 +34,28 @@ KaiOsChoiceList.prototype.refreshSelection = function() {
 	this.verticalScrollToActiveElement();
 };
 
-KaiOsChoiceList.prototype.currentItem = function() {
+KAI_choiceList.prototype.currentItem = function() {
 	return this.list[this.currentIndex];
 };
 
-KaiOsChoiceList.prototype.next = function() {
+KAI_choiceList.prototype.next = function() {
 	if (this.currentIndex < this.list.length - 1) 	this.currentIndex += 1;
 	else 											this.currentIndex = 0;
 	this.refreshSelection();
 };
 
-KaiOsChoiceList.prototype.previous = function() {
+KAI_choiceList.prototype.previous = function() {
 	if (this.currentIndex != 0) this.currentIndex -= 1;
 	else 						this.currentIndex = this.list.length - 1;
 	this.refreshSelection();
 };
 
-KaiOsChoiceList.prototype.generateHtml = function() {
+KAI_choiceList.prototype.generateHtml = function() {
 	this.refreshHTML();
 	this.refreshSelection();
 };
 
-KaiOsChoiceList.prototype.refreshHTML = function() {
+KAI_choiceList.prototype.refreshHTML = function() {
 	let html = '<table>';
 	const that = this;
 	this.list.forEach(function(option,index) {
@@ -118,4 +118,4 @@ KaiOsChoiceList.prototype.refreshHTML = function() {
 	$(this.options.targetDomSelector).html(html);
 }
 
-console.log("kaiOsChoiceList.js loaded");
+console.log("KAI_choiceList.js loaded");

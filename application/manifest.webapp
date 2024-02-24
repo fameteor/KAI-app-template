@@ -1,13 +1,13 @@
 {
-  "version": "0.0.5",
+  "version": "0.0.6",
   "name": "KAI-template",
   "description": "KAI-template",
   "type": "privileged",
   "permissions": {"systemXHR": {}},
   "launch_path": "/index.html",
   "icons": {
-    "56": "/icons/template_56.png",
-    "112": "/icons/template_112.png"
+    "56": "/myApp/icons/template_56.png",
+    "112": "/myApp/icons/template_112.png"
   },
   "developer": {
     "name": "KaiOS Team",

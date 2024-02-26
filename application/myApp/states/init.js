@@ -2,13 +2,13 @@
 // States INIT
 // -----------------------------------------------
 KAI.addState("init", {
-  softKeys : {fr : ['tt select.','chercher','hist.']},
+  softKeys : {fr : ['tt select.','chercher','']},
   display : {
     'div#input' : true,
-    'div#translations': false,
-    'div#history': false
+    'div#translations': false
   },
   afterStateChange : function() {
+    dictionnaries.generateHtml();
     // After 200 ms we select the searchWord input field
     setTimeout(() => {
       document.getElementById("searchWord").select();
@@ -19,7 +19,7 @@ KAI.addState("init", {
       dictionnaries.previous();
 		},
 		'keyup.ArrowDown': function(event) {
-      dictionnaries.next()
+      dictionnaries.next();
 		},
 		'keyup.SoftLeft': function(event) {
       document.getElementById("searchWord").select();
@@ -37,15 +37,6 @@ KAI.addState("init", {
           .then(function (ponsResponse) {
             // We stop the spinner
             KAI.spinner.off();
-            // We store the informations in history
-            history.list.unshift({
-              word:searchWord,
-              dictionnary: dictionnaries.currentItem().value,
-              response: ponsResponse,
-              label: searchWord,
-              rotatorInfos: dictionnaries.currentItem().label
-            });
-            history.currentIndex = 0;
             // We format the response and display it
             $('#translations').html(pons_formatResponse(ponsResponse));
             // We change state to display the translations
@@ -63,9 +54,6 @@ KAI.addState("init", {
           });
       }
 			else toastr.warning("Saisir un mot avant de chercher");
-		},
-    'keyup.SoftRight': function(event) {
-      KAI.newState('history');
 		}
 	}
 });

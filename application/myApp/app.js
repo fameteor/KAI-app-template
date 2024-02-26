@@ -38,17 +38,15 @@ let dictionnariesListOptions = {
 
 const dictionnaries = new KAI_choiceList(dictionnariesList,dictionnariesListOptions);
 
-// history list initialisation -----------------------
-const history = new KAI_choiceList([],{
-	"selectedItemIdPrefix" : 		"historyListOptions",
-	"targetDomSelector" : 			"#history"
-});
-
 // State machine initialisation ----------------------
+const appOptions = {
+  KAI_appTitle: "PONS dictionnaries V2.0"
+};
+
 window.onload = function() {
 	KAI.spinner.off();
+  KAI.init(appOptions);
 	KAI.newState('init');
-	dictionnaries.generateHtml();
 };
 
 console.log("app.js loaded");

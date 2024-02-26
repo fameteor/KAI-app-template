@@ -14,7 +14,7 @@ L'écran fait 240x320 pixels.
 
 
 #searchWord{
-  width:230px;
+  width: calc(100% - 10px);
   border-radius: 5px;
   background: #fff;
   border: 1px solid #ccc;
@@ -29,16 +29,9 @@ L'écran fait 240x320 pixels.
   box-shadow: 0px 0px 3px 1px #03af30;
 }
 
-#translations {width:240px;
+#translations {
+  width:100%;
 	/* 265px if fullscreen or 235px */
-	height:245px;
-	background-color: #EEEEEE;
-	color:#000080;
-	overflow-y:auto;}
-
-#history {width:240px;
-	/* 265px if fullscreen or 235px */
-	height:245px;
 	background-color: #EEEEEE;
 	color:#000080;
 	overflow-y:auto;}
@@ -66,9 +59,9 @@ tr {
 }
 
 #dictionnariesListSelector {
-	width:240px;
+	width:100%;
 	/* 265px if fullscreen or 235px */
-	height:200px;
+	height:210px;
 	background-color: #EEEEEE;
 	color:#000080;
 	overflow-y:auto;

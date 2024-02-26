@@ -45,3 +45,51 @@ Nb : the spinner do not change the state of the application, the keyboard or oth
 TBD :
 - change the overlay size depending on the application layout options : portrait/landscape, header/or not, softkeys or not...
 - make spinner hidden on startup without user code.
+
+# Screen layout
+The KaiOs screen has a definition of 240x320 pixels.
+
+There can be 4 orientations :
+- `portrait-primary` 	(normal position)
+- `portrait-secondary` 	(phone upside down)
+- `landscape-primary` 	(keyboard on the right)
+- `landscape-secondary` (Keyboard on the left)
+
+To change the orientation, you can :
+- use the Manifest : `"orientation": "landscape"`. See Manifest documentation for more informations.
+- or with Javascript : `screen.orientation.lock('landscape-primary');`
+
+To get the value of the orientation : `screen.orientation.type`
+
+A KaiOs app has the following layout (from top to bottom) :
+- KaiOs status (notifications, battery, time ...) : height is 25 px.
+- the appTitle : height 20 px.
+- the application zone : the remaining height.
+- the softkeys zone : height : 30 px.
+
+To hide the status bar, you can use the Manifest : `"fullscreen": "true"`
+
+To hide the application title, you can use the `KAI.displayAppTitle(true/false)`
+
+The layout of the KaiOs app can take thus the following values :
+- `KAI_portrait-status-appTitle`  application zone height : 245
+ px
+- `KAI_portrait-status-noAppTitle`  application zone height : 265
+ px
+- `KAI_portrait-noStatus-appTitle`  application zone height : 270
+ px
+- `KAI_portrait-noStatus-noAppTitle`  application zone height : 290
+ px
+- `KAI_landscape-status-appTitle`  application zone height : 165
+px
+- `KAI_landscape-status-noAppTitle`  application zone height : 185
+ px
+- `KAI_landscape-noStatus-appTitle`  application zone height : 190
+ px
+- `KAI_landscape-noStatus-noAppTitle`  application zone height : 210
+ px
+
+ # REFERENCE
+ ## OPTIONS
+ ## METHODS
+ ## EVENTS

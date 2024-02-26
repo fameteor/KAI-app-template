@@ -12,6 +12,77 @@ let KAI = {
   vars: {},
   // ----------------------------------
   states:{},
+
+  // ----------------------------------
+  options:{
+    KAI_appTitle:               "my app",
+    KAI_appLayout: {
+      KAI_displayOrientation :  "portrait", // 'portait' or 'landscape'
+      KAI_displayStatus:        true,
+      KAI_displayAppTitle:      true
+    }
+  },
+
+  // ----------------------------------
+  // INITIALISATION functions
+  // ----------------------------------
+  setAppTitle: function(KAI_appTitle) {
+    if (this.options && this.options.KAI_appTitle) {
+      if (KAI_appTitle) this.options.KAI_appTitle = KAI_appTitle;
+      console.log(this.options.KAI_appTitle)
+      $("#KAI_appTitle").html(this.options.KAI_appTitle);
+    }
+  },
+  setAppLayout: function(KAI_appLayout) {
+    if (  this.options && this.options.KAI_appLayout) {
+      // Set option value if provided
+      if (KAI_appLayout) {
+        Object.assign(this.options.KAI_appLayout, KAI_appLayout);
+      }
+      console.log(this.options.KAI_appLayout)
+      //We calculate the appHeight and set the correct layout Set CSS
+      let appHeight;
+      switch (this.options.KAI_appLayout.KAI_displayOrientation) {
+        case 'portrait' :
+          appHeight = 320;
+          // We set the orientation if not correct
+          console.log("Current screen orientation : " + screen.orientation.type);
+          if (!screen.orientation.type.includes('portrait')) screen.orientation.lock('portrait-primary');
+          break;
+        case 'landscape' :
+            appHeight = 240;
+            // We set the orientation if not correct
+            console.log("Current screen orientation : " + screen.orientation.type);
+            if (!screen.orientation.type.includes('landscape')) screen.orientation.lock('landscape-primary');
+          break;
+      }
+      if (this.options.KAI_appLayout.KAI_displayStatus){
+        appHeight -= 25;
+      }
+      if (this.options.KAI_appLayout.KAI_displayAppTitle){
+        $("#KAI_header").show();
+        appHeight -= 20;
+      }
+      else {
+        $("#KAI_header").hide();
+      }
+      // Softkeys height deduction
+      appHeight -= 30;
+      // we set the height for all items that have class KAI_app_height
+      console.log('class "KAI_app_height" height : ' + appHeight);
+      $(".KAI_app_height").css("height",appHeight + "px");
+    }
+  },
+
+  // KAI init -------------------------
+  init: function(options) {
+    // We merge the options properties
+    Object.assign(this.options, options);
+    // We launch the initialisation functions
+    this.setAppTitle();
+    this.setAppLayout();
+    console.log('"KAI.init" done.')
+  },
   // KaiOs_Spinner --------------------
   "spinner" : {
     "on": function(text) {
@@ -101,7 +172,6 @@ document.addEventListener("keyup", event => {
     // We look for the function for that key in the current status
     console.log("- current state : " + KAI.currentState);
     if (KAI.states.hasOwnProperty(KAI.currentState)) {
-
       if (KAI.states[KAI.currentState].hasOwnProperty("events")) {
         if (KAI.states[KAI.currentState].events[detailedEvent]) {
           // We run the function for that event
@@ -110,8 +180,10 @@ document.addEventListener("keyup", event => {
         }
         else {
           // We run the "Default" key
-          KAI.states[KAI.currentState].events["keyup.Default"](event);
-          console.log('"' + detailedEvent + '" event treated (as "keyup.Default")');
+          if (KAI.states[KAI.currentState].events["keyup.Default"]) {
+            KAI.states[KAI.currentState].events["keyup.Default"](event);
+            console.log('"' + detailedEvent + '" event treated (as "keyup.Default")');
+          }
         }
       }
     }
@@ -121,6 +193,20 @@ document.addEventListener("keyup", event => {
     console.log("Anti-bounce : invalid key");
   }
 });
+
+// -----------------------------------------------------------------
+// On windows close
+// -----------------------------------------------------------------
+
+window.addEventListener("blur", (event) => {
+  console.log("windows.blur : app closing");
+});
+
+window.addEventListener("focus", (event) => {
+  console.log("windows.focus : app get focus (started or re-started)");
+});
+
+
 
 
 // -----------------------------------------------------------------

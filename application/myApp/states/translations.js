@@ -2,11 +2,10 @@
 // States TRANSLATIONS
 // -----------------------------------------------
 KAI.addState("translations", {
-  softKeys : {fr : ['saisir','','hist']},
+  softKeys : {fr : ['saisir','','']},
   display : {
     'div#input' : false,
-    'div#translations': true,
-    'div#history': false
+    'div#translations': true
   },
   afterStateChange : function() {
     // And reset the scroll
@@ -40,9 +39,6 @@ KAI.addState("translations", {
 		},
 		'keyup.SoftLeft': function(event) {
       KAI.newState('init');
-		},
-    'keyup.SoftRight': function(event) {
-      KAI.newState('history');
 		}
 	}
 });

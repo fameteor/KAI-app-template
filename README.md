@@ -23,6 +23,8 @@ The states of the state machine can be defined using the method `KAI.addState(st
   - `keyup.SoftRight`,
   - `keyup.Backspace`,
   - `keyup.Default` : any other key on keybord : letter, symbol, number...
+  - `window.blur` : the application was "closed" (but still running in background),
+  - `window.focus` : the application was launched for the first time or re-launched,
 
 
 To change the state to a specific change, simply call `KAI.newState(stateName);`. This will automatically :

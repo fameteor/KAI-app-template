@@ -4,16 +4,18 @@
 
 
 let KAI = {
-  // ----------------------------------
+  // -----------------------------------------------------
   lang: 'fr',
-  // ----------------------------------
+  // -----------------------------------------------------
   currentState:'',
-  // ----------------------------------
+  // -----------------------------------------------------
   vars: {},
-  // ----------------------------------
+  // -----------------------------------------------------
   states:{},
 
-  // ----------------------------------
+  // -----------------------------------------------------
+  // KAI.options
+  // -----------------------------------------------------
   options:{
     KAI_appTitle:               "my app",
     KAI_appLayout: {
@@ -23,9 +25,9 @@ let KAI = {
     }
   },
 
-  // ----------------------------------
-  // INITIALISATION functions
-  // ----------------------------------
+  // -----------------------------------------------------
+  // KAI.setAppTitle : set the title of the application
+  // -----------------------------------------------------
   setAppTitle: function(KAI_appTitle) {
     if (this.options && this.options.KAI_appTitle) {
       if (KAI_appTitle) this.options.KAI_appTitle = KAI_appTitle;
@@ -33,6 +35,10 @@ let KAI = {
       $("#KAI_appTitle").html(this.options.KAI_appTitle);
     }
   },
+
+  // -----------------------------------------------------
+  // KAI.setAppLayout : displays the right screen layaout
+  // -----------------------------------------------------
   setAppLayout: function(KAI_appLayout) {
     if (  this.options && this.options.KAI_appLayout) {
       // Set option value if provided
@@ -74,16 +80,64 @@ let KAI = {
     }
   },
 
-  // KAI init -------------------------
+  // -----------------------------------------------------
+  // KAI.init
+  // -----------------------------------------------------
   init: function(options) {
     // We merge the options properties
     Object.assign(this.options, options);
     // We launch the initialisation functions
     this.setAppTitle();
     this.setAppLayout();
+    // Keyboard management ------------------------
+    const minDeltaBetweenKeys = 200; // In ms
+    let lastKeyTs = new Date().getTime();
+    document.addEventListener("keyup", event => {
+      const KAI_event = "keyup." + event.key;
+    	console.log("\"" + KAI_event + "\" event received");
+    	const keyTs = new Date().getTime();
+    	// Anti bounce filtering
+    	if ((keyTs - lastKeyTs) > minDeltaBetweenKeys) {
+        lastKeyTs = keyTs;
+        const specificKeyEvents = [
+          'keyup.ArrowLeft',
+          'keyup.ArrowRight',
+          'keyup.ArrowUp',
+          'keyup.ArrowDown',
+          'keyup.SoftLeft',
+          'keyup.Home', // for PC browser compatibility
+          'keyup.Enter',
+          'keyup.SoftRight',
+          'keyup.End', // for PC browser compatibility
+          'keyup.Backspace',
+          'keyup.Default'
+        ];
+        if (specificKeyEvents.includes(KAI_event)) {
+          // Execute KAI_event callback for that state
+          this.callEventFunction(KAI_event,event);
+        }
+        else {
+          // Execute "keyup.Default" callback for that state
+          this.callEventFunction("keyup.Default",event);
+        }
+      }
+      else {
+        console.log("Anti-bounce : invalid key");
+      }
+    });
+    // Other event listeners ----------------------
+    window.addEventListener("blur", (event) => {
+      this.callEventFunction("window.blur",event);
+    });
+    window.addEventListener("focus", (event) => {
+      this.callEventFunction("window.focus",event);
+    });
     console.log('"KAI.init" done.')
   },
-  // KaiOs_Spinner --------------------
+
+  // -----------------------------------------------------
+  // KAI.spinner
+  // -----------------------------------------------------
   "spinner" : {
     "on": function(text) {
       $("#KAI_spinner").show();
@@ -96,7 +150,10 @@ let KAI = {
       $("#KAI_spinner").hide();
     }
   },
-  // Method to change state -----------
+
+  // -----------------------------------------------------
+  // KAI.newState : method to change state
+  // -----------------------------------------------------
   newState: function(newState) {
     // If newState exists -------------
     if (this.states.hasOwnProperty(newState)){
@@ -138,73 +195,58 @@ let KAI = {
       console.log('"KAI.newState" error : "' + newState + '" state do not exists in "KAI.states"');
     }
   },
-  // ----------------------------------
-  // Method to add a state to configuration
+
+  // -----------------------------------------------------
+  // KAI.addState : method to add a state to configuration
+  // -----------------------------------------------------
   addState: function(name,stateObject) {
     if (this.hasOwnProperty('states')) {
       this.states[name] = stateObject;
       // We add émulation of softKeys for PC
-      // For ArrowLeft emulation on PC
       if (this.states[name].hasOwnProperty('events')) {
-        this.states[name].events['keyup.Home'] = this.states[name].events['keyup.SoftLeft'];
+        // For ArrowLeft emulation on PC
+        if (this.states[name].events['keyup.SoftLeft']) this.states[name].events['keyup.Home'] = this.states[name].events['keyup.SoftLeft'];
         // For ArrowRight emulation on PC
-        this.states[name].events['keyup.End'] = this.states[name].events['keyup.SoftRight'];
+        if (this.states[name].events['keyup.SoftRight']) this.states[name].events['keyup.End'] = this.states[name].events['keyup.SoftRight'];
         console.log('"KAI.addState" : state "' + name + '" added');
       }
       else console.log('"KAI.addState" error : "stateObject" do not have a "events" property.');
     }
     else console.log('"KAI.addState" error : "KAI" do not have a "states" property.');
+  },
+
+  // -----------------------------------------------------
+  // These shoud be private functions
+  // -----------------------------------------------------
+  callEventFunction : function(KAI_event,jsEvent) {
+    // We look for the function for that key in the current status
+    console.log("--------------- EVENT ---------------");
+    console.log('- current state : "' + KAI.currentState + '", event : "' + KAI_event + '"');
+    if (KAI.states && KAI.states.hasOwnProperty(KAI.currentState)) {
+      if (KAI.states[KAI.currentState].hasOwnProperty("events")) {
+        if (KAI.states[KAI.currentState].events.hasOwnProperty(KAI_event)) {
+          if ( KAI.states[KAI.currentState].events[KAI_event] instanceof Function) {
+            // We run the function for that event
+            KAI.states[KAI.currentState].events[KAI_event](jsEvent);
+            console.log("- callback OK");
+          }
+          else {
+            console.error('- KAI.states["' + KAI.currentState + '"].event["' + KAI_event + '"] is not a function');
+          }
+        }
+        else {
+          // There is no such event function for that state, nothing is done
+          console.log("- No existing event function for that state");
+        }
+      }
+      else console.error('- KAI.states["' + KAI.currentState + '"] do not have an "events" property.');
+    }
+    else console.error('- there is no KAI.states object or no KAI.states for current state : ' + KAI.currentState);
+    console.log("------------- END EVENT -------------");
   }
 };
 
-// ------------------------------------
-// Keyboard management
-// ------------------------------------
-const minDeltaBetweenKeys = 200; // In ms
-let lastKeyTs = new Date().getTime();
-document.addEventListener("keyup", event => {
-  const detailedEvent = "keyup." + event.key;
-	console.log("\"" + detailedEvent + "\" event received");
-	const keyTs = new Date().getTime();
-	// Anti bounce filtering
-	if ((keyTs - lastKeyTs) > minDeltaBetweenKeys) {
-    lastKeyTs = keyTs;
-    // We look for the function for that key in the current status
-    console.log("- current state : " + KAI.currentState);
-    if (KAI.states.hasOwnProperty(KAI.currentState)) {
-      if (KAI.states[KAI.currentState].hasOwnProperty("events")) {
-        if (KAI.states[KAI.currentState].events[detailedEvent]) {
-          // We run the function for that event
-          KAI.states[KAI.currentState].events[detailedEvent](event);
-          console.log("\"" + detailedEvent + "\" event treated");
-        }
-        else {
-          // We run the "Default" key
-          if (KAI.states[KAI.currentState].events["keyup.Default"]) {
-            KAI.states[KAI.currentState].events["keyup.Default"](event);
-            console.log('"' + detailedEvent + '" event treated (as "keyup.Default")');
-          }
-        }
-      }
-    }
-    else console.log("there is no KAI.states for current state");
-  }
-  else {
-    console.log("Anti-bounce : invalid key");
-  }
-});
 
-// -----------------------------------------------------------------
-// On windows close
-// -----------------------------------------------------------------
-
-window.addEventListener("blur", (event) => {
-  console.log("windows.blur : app closing");
-});
-
-window.addEventListener("focus", (event) => {
-  console.log("windows.focus : app get focus (started or re-started)");
-});
 
 
 

@@ -39,7 +39,57 @@ To change the state to a specific change, simply call `KAI.newState(stateName);`
 - be ready to run a function for the relevant events only.
 
 ## `KAI.choiceList` object
-contained in `/KAI/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item using the up or bottom arrow key.
+This object is contained in `/KAI/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item.
+
+Here is an example to create a `KAI.choiceList` :
+
+```
+const dictionnariesList = [
+	{
+      value:"frgb",
+      choiceList_type:"NONE",
+      choiceList_label:'français <-> anglais'
+	},
+    {
+      value:"frde",
+      choiceList_type:"NONE",
+      choiceList_label:'français <-> allemand'
+	},
+    {
+      value:"fres",
+      choiceList_type:"NONE",
+      choiceList_label:'français <-> espagnol'
+	}
+];
+
+let dictionnariesListOptions = {
+	"selectedItemIdPrefix" :       "dictionnariesListOptions",
+	"targetDomSelector" : 		 "#dictionnariesList"
+}
+
+const dictionnaries = new KAI.choiceList(dictionnariesList,dictionnariesListOptions);
+```
+
+Then you can render HTML : `dictionnaries.generateHtml();`
+
+And create events in the state machine to change up and down the selected item of the list and use the selected item :
+```
+events : {
+  'keyup.ArrowUp': function(event) {
+    dictionnaries.previous();
+  },
+  'keyup.ArrowDown': function(event) {
+    dictionnaries.next();
+  },
+  'keyup.Enter': function(event) {
+    const currentDictionnary = dictionnaries.currentItem().value;
+    ...
+  }
+}
+```
+
+choiceList_itemNumbered:"DOWN" "UP"
+
 
 ## `KAI.spinner` object
 The `KAI.spinner` object has 2 methods :
@@ -49,7 +99,6 @@ The `KAI.spinner` object has 2 methods :
 Nb : the spinner do not change the state of the application, the keyboard or other events are thus active as in the current state. If you want to disable the keyboard or other events, you need to do go to a specific state you have to define.
 
 TBD :
-- change the overlay size depending on the application layout options : portrait/landscape, header/or not, softkeys or not...
 - make spinner hidden on startup without user code.
 
 # Screen layout

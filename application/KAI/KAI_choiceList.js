@@ -65,40 +65,34 @@ KAI.choiceList.prototype.refreshHTML = function() {
 			{{#.}}
 				<tr id="{{id}}" class="list">
 					<td class="list">
-						{{#rotatorIcon}}
-							{{#color}}
-								<label><i class="{{rotatorIcon}}" style="color:{{color}}"></i></label>
-							{{/color}}
-							{{^color}}
-								<label><i class="{{rotatorIcon}}"></i></label>
-							{{/color}}
+						{{#choiceList_icon}}
+								<label><i class="{{choiceList_icon}}"></i></label>
 							<br/>
-						{{/rotatorIcon}}
-						{{#rotatorItemsNumbered}}
-							<span class="info">{{rotatorNumber}}</span>
-						{{/rotatorItemsNumbered}}
+						{{/choiceList_icon}}
+						{{#choiceList_itemNumbered}}
+							<span class="info">{{choiceList_itemNumber}}</span>
+						{{/choiceList_itemNumbered}}
 					</td>
 					<td class="list">
 						<center>
-							<label>{{{label}}}</label>
-							{{#rotatorInfos}}
-								<div class="info">{{{rotatorInfos}}}</div>
-							{{/rotatorInfos}}
+							<choiceList_label>{{{choiceList_label}}}</choiceList_label>
+							{{#choiceList_infos}}
+								<div class="info">{{{choiceList_infos}}}</div>
+							{{/choiceList_infos}}
 						</center>
 					</td>
 					<td class="text-center list">
-						{{#rotatorTypeIsBOOLEAN}}
-							{{#rotatorValue}}
+						{{#choiceList_typeIsBOOLEAN}}
+							{{#choiceList_value}}
 								<input type="checkbox" checked>
-							{{/rotatorValue}}
-							{{^rotatorValue}}
+							{{/choiceList_value}}
+							{{^choiceList_value}}
 								<input type="checkbox">
-							{{/rotatorValue}}
-						{{/rotatorTypeIsBOOLEAN}}
-						{{#rotatorTypeIsMENU}}
-						{{/rotatorTypeIsMENU}}
-						{{#rotatorTypeIsNONE}}
-						{{/rotatorTypeIsNONE}}
+							{{/choiceList_value}}
+						{{/choiceList_typeIsBOOLEAN}}
+						{{#choiceList_typeIsMENU}}
+							<i class="fas fa-chevron-right"></i>
+						{{/choiceList_typeIsMENU}}
 					</td>
 				</tr>
 			{{/.}}
@@ -109,23 +103,22 @@ KAI.choiceList.prototype.refreshHTML = function() {
 	const data = this.list.map(function(element,index) {
 		let newElement = {};
 		newElement.id = that.options.selectedItemIdPrefix + index;
-		newElement.label = (element.label instanceof Function) ? element.label() : element.label;
-		newElement.rotatorIcon = element.rotatorIcon;
-		newElement.color = element.color;
-		newElement.rotatorType = element.rotatorType;
-		newElement.rotatorValue = element.rotatorValue;
-		newElement.rotatorInfos = (element.rotatorInfos instanceof Function) ? element.rotatorInfos() : element.rotatorInfos;
-		newElement.rotatorTypeIsBOOLEAN = (element.rotatorType === "BOOLEAN");
-		newElement.rotatorTypeIsMENU = (element.rotatorType === "MENU");
-		newElement.rotatorTypeIsNONE = (element.rotatorType === "NONE");
-		if (element.rotatorItemsNumbered) {
-			if (element.rotatorItemsNumbered === "UP") {
-				newElement.rotatorItemsNumbered = element.rotatorItemsNumbered;
-				newElement.rotatorNumber = index + 1;
+		newElement.choiceList_label = (element.choiceList_label instanceof Function) ? element.choiceList_label() : element.choiceList_label;
+		newElement.choiceList_icon = element.choiceList_icon;
+		newElement.choiceList_type = element.choiceList_type;
+		newElement.choiceList_value = element.choiceList_value;
+		newElement.choiceList_infos = (element.choiceList_infos instanceof Function) ? element.choiceList_infos() : element.choiceList_infos;
+		newElement.choiceList_typeIsBOOLEAN = (element.choiceList_type === "BOOLEAN");
+		newElement.choiceList_typeIsMENU = (element.choiceList_type === "MENU");
+		newElement.choiceList_typeIsNONE = (element.choiceList_type === "NONE");
+		if (element.choiceList_itemNumbered) {
+			if (element.choiceList_itemNumbered === "UP") {
+				newElement.choiceList_itemNumbered = element.choiceList_itemNumbered;
+				newElement.choiceList_itemNumber = index + 1;
 			}
-			if (element.rotatorItemsNumbered === "DOWN") {
-				newElement.rotatorItemsNumbered = element.rotatorItemsNumbered;
-				newElement.rotatorNumber = that.list.length - index;
+			if (element.choiceList_itemNumbered === "DOWN") {
+				newElement.choiceList_itemNumbered = element.choiceList_itemNumbered;
+				newElement.choiceList_itemNumber = that.list.length - index;
 			}
 		}
 		return newElement;

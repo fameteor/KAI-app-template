@@ -4,34 +4,35 @@ KAI.vars.scroll = 0;
 // Dictionnaries option list creation ----------------
 const dictionnariesList = [
 	{
-		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> slovène <span class="fi fi-si"></span>',
+		choiceList_label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> slovène <span class="fi fi-si"></span>',
 		value:"frsl",
-		rotatorType:"NONE", // MENU or BOOLEAN
-		// rotatorIcon:"fas fa-people-arrows",
-		// rotatorInfos:"essai infos",
-		// color:"#F24578", // Icon color only
-		// rotatorValue:true, // value of boolean
-		// rotatorItemsNumbered:"DOWN"  // UP or DOWN
+		choiceList_type:"NONE", // MENU, NONE or BOOLEAN
+		// choiceList_icon:"fas fa-people-arrows",
+		// choiceList_infos:"essai infos",
+		// choiceList_value:true, // read only property : if choiceList_type === "BOOLEAN", this is the value of checkbox : true if checked, otherwise false
+		// choiceList_itemNumbered:"DOWN"  // UP or DOWN
+		// choiceList_itemNumber : read only property
+		//
 	},
 	{
-		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> allemand <span class="fi fi-de"></span>',
+		choiceList_label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> allemand <span class="fi fi-de"></span>',
 		value:"defr",
-		rotatorType:"NONE"
+		choiceList_type:"NONE"
 	},
 	{
-		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> anglais <span class="fi fi-gb"></span>',
+		choiceList_label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> anglais <span class="fi fi-gb"></span>',
 		value:"enfr",
-		rotatorType:"NONE"
+		choiceList_type:"NONE"
 	},
 	{
-		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> italien <span class="fi fi-it"></span>',
+		choiceList_label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> italien <span class="fi fi-it"></span>',
 		value:"frit",
-		rotatorType:"NONE"
+		choiceList_type:"NONE"
 	},
 	{
-		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> espagnol <span class="fi fi-es"></span>',
+		choiceList_label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> espagnol <span class="fi fi-es"></span>',
 		value:"esfr",
-		rotatorType:"NONE"
+		choiceList_type:"NONE"
 	}
 ];
 

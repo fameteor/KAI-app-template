@@ -41,7 +41,9 @@ To change the state to a specific change, simply call `KAI.newState(stateName);`
 ## `KAI.choiceList` object
 This object is contained in `/KAI/KAI_choiceList.js` file). This object is used to build KaiOs choice list to choose an item.
 
-Here is an example to create a `KAI.choiceList` :
+Here is an example to create a `KAI.choiceList` that will give the following result :
+
+![simple choiceList](screen_copies/choiceList_simple.png)  
 
 ```
 const dictionnariesList = [

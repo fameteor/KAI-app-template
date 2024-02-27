@@ -1,20 +1,20 @@
 // -----------------------------------------------------------------
-// KAI_choiceList
+// KAI.choiceList
 // -----------------------------------------------------------------
 
-const KAI_choiceList = function(list,options) {
+KAI.choiceList = function(list,options) {
 	this.options = options;
 	this.list = list;
 	this.currentIndex = (this.options && this.options.initialSelectionIndex) ? this.options.initialSelectionIndex() : 0;
 }
 
-KAI_choiceList.prototype.verticalScrollToActiveElement = function() {
+KAI.choiceList.prototype.verticalScrollToActiveElement = function() {
 	if ($("tr[id^=" + this.options.selectedItemIdPrefix + "].active") && $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position()) document.getElementById("dictionnariesListSelector").scrollTo({top: $("tr[id^=" + this.options.selectedItemIdPrefix + "].active").position().top, behavior: 'smooth'});
 	// Other possibiity :
 	// document.getElementById("root").scrollTo({top: this.currentIndex * 70, behavior: 'smooth'});
 }
 
-KAI_choiceList.prototype.refreshSelection = function() {
+KAI.choiceList.prototype.refreshSelection = function() {
 	// Refresh selection
 	if (this.options.selectedItemIdPrefix) {
 		const that = this;
@@ -34,88 +34,105 @@ KAI_choiceList.prototype.refreshSelection = function() {
 	this.verticalScrollToActiveElement();
 };
 
-KAI_choiceList.prototype.currentItem = function() {
+KAI.choiceList.prototype.currentItem = function() {
 	return this.list[this.currentIndex];
 };
 
-KAI_choiceList.prototype.next = function() {
+KAI.choiceList.prototype.next = function() {
 	if (this.currentIndex < this.list.length - 1) 	this.currentIndex += 1;
 	else 											this.currentIndex = 0;
 	this.refreshSelection();
 };
 
-KAI_choiceList.prototype.previous = function() {
+KAI.choiceList.prototype.previous = function() {
 	if (this.currentIndex != 0) this.currentIndex -= 1;
 	else 						this.currentIndex = this.list.length - 1;
 	this.refreshSelection();
 };
 
-KAI_choiceList.prototype.generateHtml = function() {
+KAI.choiceList.prototype.generateHtml = function() {
 	this.refreshHTML();
 	this.refreshSelection();
 };
 
-KAI_choiceList.prototype.refreshHTML = function() {
-	let html = '<table>';
-	const that = this;
-	this.list.forEach(function(option,index) {
-		html += `<tr id="{{id}}" class="list">
-					<td class="list">{{icon}}{{itemsNumbered}}</td>
+// -----------------------------------------------------------------
+// refreshHTML
+// -----------------------------------------------------------------
+KAI.choiceList.prototype.refreshHTML = function() {
+	// Template ------------------------------------------------------
+	const template = `
+		<table>
+			{{#.}}
+				<tr id="{{id}}" class="list">
+					<td class="list">
+						{{#rotatorIcon}}
+							{{#color}}
+								<label><i class="{{rotatorIcon}}" style="color:{{color}}"></i></label>
+							{{/color}}
+							{{^color}}
+								<label><i class="{{rotatorIcon}}"></i></label>
+							{{/color}}
+							<br/>
+						{{/rotatorIcon}}
+						{{#rotatorItemsNumbered}}
+							<span class="info">{{rotatorNumber}}</span>
+						{{/rotatorItemsNumbered}}
+					</td>
 					<td class="list">
 						<center>
-						<label>{{label}}</label>
-						{{infos}}
+							<label>{{{label}}}</label>
+							{{#rotatorInfos}}
+								<div class="info">{{{rotatorInfos}}}</div>
+							{{/rotatorInfos}}
 						</center>
 					</td>
 					<td class="text-center list">
-						{{type}}
+						{{#rotatorTypeIsBOOLEAN}}
+							{{#rotatorValue}}
+								<input type="checkbox" checked>
+							{{/rotatorValue}}
+							{{^rotatorValue}}
+								<input type="checkbox">
+							{{/rotatorValue}}
+						{{/rotatorTypeIsBOOLEAN}}
+						{{#rotatorTypeIsMENU}}
+						{{/rotatorTypeIsMENU}}
+						{{#rotatorTypeIsNONE}}
+						{{/rotatorTypeIsNONE}}
 					</td>
-				 </tr>`;
-		const id = that.options.selectedItemIdPrefix + index;
-		const label = (option.label instanceof Function) ? option.label() : option.label;
-		let itemsNumbered = "";
-		if (that.options.itemsNumbered === "reverse") itemsNumbered = '<br/><span class="info">' + (that.list.length - index) + '</span>';
-		let type = "";
-		switch(option.rotatorType) {
-			case "BOOLEAN":
-				if (option.rotatorValue) {
-					if (option.rotatorValue() === true) 	type = '<input type="checkbox" checked>';
-					else						type = '<input type="checkbox">';
-				}
-				else 							type = '<input type="checkbox">';
-				break;
-			case "MENU":
-				type = '<i class="fas fa-thumbs-up"></i>';
-				break;
-			case "NONE":
-					type = '';
-					break;
-			default:
-				type = '<i class="fas fa-chevron-right"></i>'
-				break;
-
+				</tr>
+			{{/.}}
+		</table>
+	`;
+	// data creation -------------------------------------------------
+	that = this;
+	const data = this.list.map(function(element,index) {
+		let newElement = {};
+		newElement.id = that.options.selectedItemIdPrefix + index;
+		newElement.label = (element.label instanceof Function) ? element.label() : element.label;
+		newElement.rotatorIcon = element.rotatorIcon;
+		newElement.color = element.color;
+		newElement.rotatorType = element.rotatorType;
+		newElement.rotatorValue = element.rotatorValue;
+		newElement.rotatorInfos = (element.rotatorInfos instanceof Function) ? element.rotatorInfos() : element.rotatorInfos;
+		newElement.rotatorTypeIsBOOLEAN = (element.rotatorType === "BOOLEAN");
+		newElement.rotatorTypeIsMENU = (element.rotatorType === "MENU");
+		newElement.rotatorTypeIsNONE = (element.rotatorType === "NONE");
+		if (element.rotatorItemsNumbered) {
+			if (element.rotatorItemsNumbered === "UP") {
+				newElement.rotatorItemsNumbered = element.rotatorItemsNumbered;
+				newElement.rotatorNumber = index + 1;
+			}
+			if (element.rotatorItemsNumbered === "DOWN") {
+				newElement.rotatorItemsNumbered = element.rotatorItemsNumbered;
+				newElement.rotatorNumber = that.list.length - index;
+			}
 		}
-
-
-		if (option.rotatorInfos) {
-			const infos = '<div class="info">' + ((option.rotatorInfos instanceof Function) ? option.rotatorInfos() : option.rotatorInfos) + '</div>';
-			html = html.replace('{{infos}}',infos);
-		}
-		else html = html.replace('{{infos}}',"");
-		if (option.rotatorIcon) {
-			let icon = '';
-			if (option.color)	icon ='<label><i class="' + option.rotatorIcon + '" style="color:' + option.color + ';"></i></label>';
-			else 				icon ='<label><i class="' + option.rotatorIcon + '"></i></label>';
-			html = html.replace('{{icon}}',icon);
-		}
-		else html = html.replace('{{icon}}',"");
-		html = html.replace('{{id}}',id);
-		html = html.replace('{{label}}',label);
-		html = html.replace('{{type}}',type);
-		html = html.replace('{{itemsNumbered}}',itemsNumbered);
+		return newElement;
 	});
-	html += '</table>'
-	$(this.options.targetDomSelector).html(html);
+	console.log(data);
+	// Rendering -----------------------------------------------------
+	$(this.options.targetDomSelector).html(mustache.render(template,data));
 }
 
-console.log("KAI_choiceList.js loaded");
+console.log("KAI.choiceList.js loaded");

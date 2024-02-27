@@ -6,8 +6,12 @@ const dictionnariesList = [
 	{
 		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> slovène <span class="fi fi-si"></span>',
 		value:"frsl",
-		rotatorType:"NONE"
-		// rotatorIcon:"fas fa-people-arrows"
+		rotatorType:"NONE", // MENU or BOOLEAN
+		// rotatorIcon:"fas fa-people-arrows",
+		// rotatorInfos:"essai infos",
+		// color:"#F24578", // Icon color only
+		// rotatorValue:true, // value of boolean
+		// rotatorItemsNumbered:"DOWN"  // UP or DOWN
 	},
 	{
 		label:'<span class="fi fi-fr"></span> français <i class="fas fa-sync"></i> allemand <span class="fi fi-de"></span>',
@@ -36,7 +40,7 @@ let dictionnariesListOptions = {
 	"targetDomSelector" : 			"#dictionnariesList"
 }
 
-const dictionnaries = new KAI_choiceList(dictionnariesList,dictionnariesListOptions);
+const dictionnaries = new KAI.choiceList(dictionnariesList,dictionnariesListOptions);
 
 // State machine initialisation ----------------------
 const appOptions = {

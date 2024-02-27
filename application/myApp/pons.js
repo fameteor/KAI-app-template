@@ -77,6 +77,7 @@ function pons_getTranslations (word, dictionnary) {
 // pons_formatResponse(response)
 // Format the PONS dictionnary response to relevant HTML
 // ----------------------------------------------------
+/*
 const pons_formatResponse = function(response) {
 	let html = "";
 	response.forEach(function(langsHits) {
@@ -101,4 +102,36 @@ const pons_formatResponse = function(response) {
 	});
 	console.log(html);
   return html;
+}
+*/
+
+// ----------------------------------------------------
+// pons_formatResponse(response)
+// Format the PONS dictionnary response to relevant HTML
+// MUSTACHE version
+// ----------------------------------------------------
+const pons_formatResponse = function(response) {
+  const template = `
+  {{#.}}
+    <p class="lang">Langue : {{lang}}</p>
+    {{#hits}}
+      {{#roms}}
+        <p class="result">{{{headword_full}}}</p>
+        {{#arabs}}
+          {{#header}}
+            {{{.}}}<br/>
+          {{/header}}
+          <table class="translations">
+            {{#translations}}
+              <tr><td>{{{source}}}</td><td>{{{target}}}</td></tr>
+            {{/translations}}
+          </table>
+        {{/arabs}}
+      {{/roms}}
+    {{/hits}}
+  {{/.}}
+  `;
+  const result = mustache.render(template,response);
+  console.log(result);
+  return result;
 }

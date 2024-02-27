@@ -2,6 +2,7 @@
 Contains :
 - `KAI` object : to build a KaiOs application as a state machine.
 - Fontawesome 5 fonts.
+- mustache 4.2.0
 - jquery 3.5.1
 
 ## `KAI` object
@@ -18,9 +19,9 @@ The states of the state machine can be defined using the method `KAI.addState(st
   - `keyup.ArrowRight`,
   - `keyup.ArrowUp`,
   - `keyup.ArrowDown`,
-  - `keyup.SoftLeft`,
+  - `keyup.SoftLeft` (= `keyup.Home` on PC browser),
   - `keyup.Enter`,
-  - `keyup.SoftRight`,
+  - `keyup.SoftRight` (= `keyup.END` on PC browser),
   - `keyup.Backspace`,
   - `keyup.Default` : any other key on keybord : letter, symbol, number...
   - `window.blur` : the application was "closed" (but still running in background),
@@ -95,3 +96,7 @@ px
  ## OPTIONS
  ## METHODS
  ## EVENTS
+
+ # TBD
+
+ - Enlever les fonctions globales de mustache

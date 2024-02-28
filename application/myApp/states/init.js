@@ -1,4 +1,4 @@
-// -----------------------------------------------
+KAI.toastr// -----------------------------------------------
 // States INIT
 // -----------------------------------------------
 KAI.addState("init", {
@@ -49,11 +49,11 @@ KAI.addState("init", {
           .catch(function (err) {
             // We stop the spinner and display the error
             KAI.spinner.off();
-            toastr.warning(err.statusText);
+            KAI.toastr.warning(err.statusText);
   					console.log(err.statusText);
           });
       }
-			else toastr.warning("Saisir un mot avant de chercher");
+			else KAI.toastr.warning("Saisir un mot avant de chercher");
 		}
 	}
 });

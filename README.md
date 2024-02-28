@@ -103,20 +103,10 @@ Nb : the spinner do not change the state of the application, the keyboard or oth
 TBD :
 - make spinner hidden on startup without user code.
 
+## `KAI.toastr` object
+
 # Screen layout
 The KaiOs screen has a definition of 240x320 pixels.
-
-There can be 4 orientations :
-- `portrait-primary` 	(normal position)
-- `portrait-secondary` 	(phone upside down)
-- `landscape-primary` 	(keyboard on the right)
-- `landscape-secondary` (Keyboard on the left)
-
-To change the orientation, you can :
-- use the Manifest : `"orientation": "landscape"`. See Manifest documentation for more informations.
-- or with Javascript : `screen.orientation.lock('landscape-primary');`
-
-To get the value of the orientation : `screen.orientation.type`
 
 A KaiOs app has the following layout (from top to bottom) :
 - KaiOs status (notifications, battery, time ...) : height is 25 px.
@@ -126,9 +116,17 @@ A KaiOs app has the following layout (from top to bottom) :
 
 To hide the status bar, you can use the Manifest : `"fullscreen": "true"`
 
-To hide the application title, you can use the `KAI.displayAppTitle(true/false)`
+To change dynamically the screen orientation and to hide and/or show the application title, you can use :
 
-The layout of the KaiOs app can take thus the following values :
+```
+setAppLayout({
+  KAI_displayOrientation :  "portrait", // 'portait' or 'landscape'
+  KAI_displayAppTitle:      true        // true or false
+});
+```
+
+The screen height of the `KAI_app` div is thus automatically calculated and will take the following values :
+
 - `KAI_portrait-status-appTitle`  application zone height : 245
  px
 - `KAI_portrait-status-noAppTitle`  application zone height : 265

@@ -252,9 +252,9 @@ let KAI = {
 
 
 // -----------------------------------------------------------------
-// Toastr
+// KAI.toastr
 // -----------------------------------------------------------------
-const toastr = {
+KAI.toastr = {
 	info : function (text) {
 		$("#toastrMsg").html('<center><i class="fas fa-info-circle"></i><br/>' + text + '</center>');
 		$("#toastr").attr("class","visible");
@@ -266,13 +266,11 @@ const toastr = {
 		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
 	},
 	question : function(text) {
-		state.push("QUESTION");
 		$("#toastr").attr("class","visible");
 		$("#toastrMsg").html('<center><i class="fas fa-question-circle"></i><br/>' + text + '</center>');
 	},
 	hide: function() {
 		$("#toastr").attr("class","hidden");
-		state.pop();
 	}
 }
 

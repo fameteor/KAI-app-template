@@ -76,38 +76,6 @@ function pons_getTranslations (word, dictionnary) {
 // ----------------------------------------------------
 // pons_formatResponse(response)
 // Format the PONS dictionnary response to relevant HTML
-// ----------------------------------------------------
-/*
-const pons_formatResponse = function(response) {
-	let html = "";
-	response.forEach(function(langsHits) {
-		html += "<p class=\"lang\">Langue : " + langsHits.lang + "</p>";
-		langsHits.hits.forEach(function(hit) {
-			hit.roms.forEach(function(rom) {
-				html += "<p class=\"result\">" + rom.headword_full + "</p>";
-				rom.arabs.forEach(function(arab) {
-					if (arab.header) {
-						html += arab.header;
-						html += "<br/>";
-					}
-					html += "<table class=\"translations\">";
-					arab.translations.forEach(function(translation) {
-						html += "<tr><td>" + translation.source + "</td><td>" + translation.target + "</td></tr>";
-						console.log("translation ok");
-					});
-					html += "</table>";
-				});
-			});
-		});
-	});
-	console.log(html);
-  return html;
-}
-*/
-
-// ----------------------------------------------------
-// pons_formatResponse(response)
-// Format the PONS dictionnary response to relevant HTML
 // MUSTACHE version
 // ----------------------------------------------------
 const pons_formatResponse = function(response) {

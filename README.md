@@ -114,7 +114,11 @@ A KaiOs app has the following layout (from top to bottom) :
 - the application zone : the remaining height.
 - the softkeys zone : height : 30 px.
 
-To hide the status bar, you can use the Manifest : `"fullscreen": "true"`
+To change the screen orientation, you can use the Manifest : ``"orientation": "landscape"``
+
+To hide the status bar, you need to use the Manifest : `"fullscreen": "true"`
+
+See Manifest documentation for more informations.
 
 To change dynamically the screen orientation and to hide and/or show the application title, you can use :
 

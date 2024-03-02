@@ -4,6 +4,8 @@
 
 
 let KAI = {
+  // KAI lib Version -------------------------------------
+  KAI_version : "V0.0.1",
   // -----------------------------------------------------
   lang: 'fr',
   // -----------------------------------------------------
@@ -92,6 +94,7 @@ let KAI = {
     // Keyboard management ------------------------
     const minDeltaBetweenKeys = 200; // In ms
     let lastKeyTs = new Date().getTime();
+    const that = this;
     document.addEventListener("keyup", event => {
       const KAI_event = "keyup." + event.key;
     	console.log("\"" + KAI_event + "\" event received");
@@ -114,11 +117,17 @@ let KAI = {
         ];
         if (specificKeyEvents.includes(KAI_event)) {
           // Execute KAI_event callback for that state
-          this.callEventFunction(KAI_event,event);
+          that.callEventFunction(KAI_event,event);
         }
         else {
+          // if "Call" pressed, display KAI lib version
+          if ( event.key === "Call") {
+            console.log("version");
+            that.toastr.info("KAI framework version " + that.KAI_version);
+          }
+
           // Execute "keyup.Default" callback for that state
-          this.callEventFunction("keyup.Default",event);
+          that.callEventFunction("keyup.Default",event);
         }
       }
       else {
@@ -269,36 +278,31 @@ let KAI = {
     }
     else console.error('- there is no KAI.states object or no KAI.states for current state : ' + KAI.currentState);
     console.log("------------- END EVENT -------------");
+  },
+  // -----------------------------------------------------------------
+  // KAI.toastr
+  // -----------------------------------------------------------------
+  toastr : {
+  	info : function (text) {
+  		$("#toastrMsg").html('<center><i class="fas fa-info-circle"></i><br/>' + text + '</center>');
+  		$("#toastr").attr("class","visible");
+  		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+  	},
+  	warning : function (text) {
+  		$("#toastrMsg").html('<center><i class="fas fa-exclamation-circle"></i><br/>' + text + '</center>');
+  		$("#toastr").attr("class","visible");
+  		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
+  	},
+  	question : function(text) {
+  		$("#toastr").attr("class","visible");
+  		$("#toastrMsg").html('<center><i class="fas fa-question-circle"></i><br/>' + text + '</center>');
+  	},
+  	hide: function() {
+  		$("#toastr").attr("class","hidden");
+  	}
   }
 };
 
-
-
-
-
-
-// -----------------------------------------------------------------
-// KAI.toastr
-// -----------------------------------------------------------------
-KAI.toastr = {
-	info : function (text) {
-		$("#toastrMsg").html('<center><i class="fas fa-info-circle"></i><br/>' + text + '</center>');
-		$("#toastr").attr("class","visible");
-		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
-	},
-	warning : function (text) {
-		$("#toastrMsg").html('<center><i class="fas fa-exclamation-circle"></i><br/>' + text + '</center>');
-		$("#toastr").attr("class","visible");
-		setTimeout(function(){ $("#toastr").attr("class","hidden"); }, 2000);
-	},
-	question : function(text) {
-		$("#toastr").attr("class","visible");
-		$("#toastrMsg").html('<center><i class="fas fa-question-circle"></i><br/>' + text + '</center>');
-	},
-	hide: function() {
-		$("#toastr").attr("class","hidden");
-	}
-}
 
 
 console.log("kai.js loaded");

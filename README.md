@@ -155,4 +155,8 @@ px
 
  # TBD
 
- - Enlever les fonctions globales de mustache
+ - Enlever les fonctions globales de la librairie mustache
+ - ajouter l'affichage de la version de l'app quand on appuie sur "Call"
+ - si plusieurs Spinner sont lancés, le premier qui est enlevé car les autres toujours potentiellement en cours.
+ - idem for multiple infos
+ 

@@ -1,9 +1,11 @@
 # KAIos template changelog
 
-## V0.0.1
+## V1.0.1
 
 ### New functionnalities
-- first version of `KAI.config` object to save and load config on SDcard.
-- coldStart and warmStart notions introduced
 
-### Evolution from previous versions
+### Bugs corrected
+- `KAI.spinner` is now `off` when `KAI.init()` without loading `config` from SDcard.
+
+### Files modified
+- `KAI.js` only

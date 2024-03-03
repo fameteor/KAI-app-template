@@ -1,9 +1,12 @@
 {
-  "version": "0.0.6",
-  "name": "KAI-template",
-  "description": "KAI-template",
+  "version": "1.0.1",
+  "name": "Template",
+  "description": "Template",
   "type": "privileged",
-  "permissions": {"systemXHR": {}},
+  "permissions": {
+    "systemXHR": {},
+    "device-storage:sdcard":{ "access": "readwrite" }
+  },
   "launch_path": "/index.html",
   "icons": {
     "56": "/myApp/icons/template_56.png",
@@ -15,9 +18,9 @@
   },
   "locales": {
     "fr-FR": {
-      "name": "KAI-template",
-      "subtitle": "KAI-template",
-      "description": "KAI-template"
+      "name": "Template",
+      "subtitle": "Template",
+      "description": "Template"
     }
   },
   "default_locale": "fr-FR"

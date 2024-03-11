@@ -22,14 +22,10 @@ header#KAI_header {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #03af30;
-  color:#000000;
-  padding: 3px 10px;
-}
-
-header span {
+  background-color: #000000;
+  color:#FFFFFF;
   font-size: 16px;
-  color: #000000;
+  padding: 3px 10px;
 }
 
 /* SOFTKEYS */
@@ -55,23 +51,23 @@ header span {
 #SoftLeft,
 #SoftRight {
   font-size: 14px;
-  color: #313131;
+  color: #000000;
   width: 100%;
 }
 
 #SoftLeft {
-  text-align: left;
+  text-align: center;
   padding-right: 5px;
 }
 
 #Center {
-  color: #313131;
+  color: #000000;
   font-size: 14px;
   width: 100%;
 }
 
 #SoftRight {
-  text-align: right;
+  text-align: center;
   padding-left: 5px;
 }
 
@@ -107,8 +103,8 @@ div#toastr {
 	width :  calc(100% - 10px);
 	padding:10px;
 	margin:5px;
-	background-color : rgb(0, 0, 128);
-	color: #FFFFFF;
+	background-color : #c5cac5;
+	color: #000000;
 	z-index: 101;
 	border-radius: 5px;
 }

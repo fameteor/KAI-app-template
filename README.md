@@ -105,6 +105,15 @@ TBD :
 
 ## `KAI.toastr` object
 
+## `KAI.SD` object
+
+The `KAI.SD` object helps to manage operations on SD card. The available methods are :
+
+- `readTextFile(filePath)` : returns à `Promise`,
+- `writeTextFile(text,filePath)` : returns à `Promise`,
+- `deleteFile(filePath)`: returns `Promise`,
+- `saveConfig()` : returns nothing, manages spinner and toastr for completion/incompletion messages.
+
 # Screen layout
 The KaiOs screen has a definition of 240x320 pixels.
 
@@ -159,4 +168,3 @@ px
  - ajouter l'affichage de la version de l'app quand on appuie sur "Call"
  - si plusieurs Spinner sont lancés, le premier qui est enlevé car les autres toujours potentiellement en cours.
  - idem for multiple infos
- 

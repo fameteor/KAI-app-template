@@ -4,7 +4,7 @@
 const KAI = {
   // KAI lib Version
   //------------------------------------------------------
-  version : "V1.0.1",
+  version : "V1.0.2",
 
   // Current state value
   // -----------------------------------------------------
@@ -29,7 +29,9 @@ const KAI = {
     appVersion: 					  "To be defined",
     lang:                   'fr',
     loadConfigFromSD: 		  false,
-    configFilePath: 			   "To be defined",
+    configFilePath: 			  "To be defined",
+    appTitleBackgroundColor:"#B700DB",
+    appTitleColor:          "#FFFFFF",
     appLayout: {
       displayOrientation :  "portrait", // 'portait' or 'landscape'
       displayStatus:        true,
@@ -60,6 +62,13 @@ const KAI = {
       if (appTitle) this.options.appTitle = appTitle;
       console.log('"setAppTitle" : ' + this.options.appTitle);
       $("#KAI_appTitle").html(this.options.appTitle);
+      // We set the correct app title background color if available
+      if (this.options.appTitleBackgroundColor) {
+        $("#KAI_header").css("background-color",this.options.appTitleBackgroundColor);
+      }
+      if (this.options.appTitleColor) {
+        $("#KAI_header").css("color",this.options.appTitleColor);
+      }
     }
   },
 
@@ -174,11 +183,17 @@ const KAI = {
     // We read the config on SD card if requested --------
     if (this.options.loadConfigFromSD && this.options.configFilePath) {
       KAI.spinner.on("Chargement de la configuration en cours...");
-    	KAI.SD.readJsonFile(this.options.configFilePath)
-        .then(function (config) {
+    	KAI.SD.readTextFile(this.options.configFilePath)
+        .then(function (configText) {
     			KAI.spinner.off();
-          // We overwrite the default config
-    			if (config) KAI.config = config;
+          try {
+            const config = JSON.parse(configText);
+            // We overwrite the default config
+      			if (config) KAI.config = config;
+          }
+          catch(e) {
+            console.log(e);
+          }
     			KAI.coldStart();
         })
         .catch(function (err) {
@@ -355,7 +370,7 @@ const KAI = {
 // KAI.SD : methods to access the SDcard
 // -----------------------------------------------------
 KAI.SD = {
-  readJsonFile : function(filePath) {
+  readTextFile : function(filePath) {
     return new Promise(function (resolve, reject) {
       var sdcard = navigator.getDeviceStorage('sdcard');
       var request = sdcard.get(filePath);
@@ -368,51 +383,93 @@ KAI.SD = {
         read.readAsText(file);
         read.onloadend = function(){
             console.log(read.result);
-            try {
-              const config = JSON.parse(read.result);
-              console.log(config);
-              resolve(config);
-            }
-            catch(e) {
-              console.log('"KAI.config.readFromSD" error.');
-              console.log(e);
-              reject({
-                err: e,
-                text: '"KAI.SD.readJsonFile" error'
-              });
-            }
+            resolve(read.result);
+        }
+        read.onerror = function () {
+          reject({
+            err: read.error,
+            text: '"KAI.SD.readTextFile" error'
+          });
         }
       }
       request.onerror = function () {
         console.warn("Unable to get the file: " + this.error);
         reject({
           err: this.error,
-          text: '"KAI.SD.readJsonFile" error'
+          text: '"KAI.SD.readTextFile" error'
         });
       }
     });
   },
-  writeConfigToSD : function(filePath) {
-    var data = {
-      essai:2,
-      bidon : "ceci est un essai"
-    }
-    var sdcard = navigator.getDeviceStorage("sdcard");
-    var file   = new Blob([JSON.stringify(data)], {type: "text/plain"});
+  writeTextFile : function(text,filePath) {
+    return new Promise(function (resolve, reject) {
+      var sdcard = navigator.getDeviceStorage("sdcard");
+      var file   = new Blob([text], {type: "text/plain"});
+      var request = sdcard.addNamed(file, filePath);
 
-    var request = sdcard.addNamed(file, filePath);
+      request.onsuccess = function () {
+        console.log('"KAI.config.writeTextFile" : config "' + this.result + '" successfully writen on the SDcard');
+        resolve();
+      }
 
-    request.onsuccess = function () {
-      console.log('"KAI.config.writeToSD" : config "' + this.result + '" successfully writen on the SDcard');
-    }
+      // An error typically occurs if a file with the same name already exist
+      request.onerror = function () {
+        console.warn('Unable to write the file: ' + this.error);
+        reject({
+          err: this.error,
+          text: '"KAI.SD.writeTextFile" error'
+        });
+      }
+    });
+  },
+  deleteFile : function(filePath) {
+    return new Promise(function (resolve, reject) {
+      var sdcard = navigator.getDeviceStorage('sdcard');
+      var request = sdcard.delete(filePath);
 
-    // An error typically occur if a file with the same name already exist
-    request.onerror = function () {
-      console.error(this.error);
-      console.warn('Unable to write the file: ' + this.error);
-    }
+      request.onsuccess = function () {
+        console.log("File " + filePath + " deleted");
+        resolve();
+      }
+
+      request.onerror = function () {
+        console.log("Unable to delete the file: " + this.error);
+        reject({
+          err: this.error,
+          text: '"KAI.SD.deleteFile" error'
+        });
+      }
+    });
+  },
+  saveConfig : function() {
+    KAI.spinner.on("sauvegarde de la configuration...");
+    KAI.SD.deleteFile(KAI.options.configFilePath)
+      .then(function (result1) {
+        try {
+          const text = JSON.stringify(KAI.config);
+          KAI.SD.writeTextFile(text,KAI.options.configFilePath)
+            .then(function (result2) {
+              KAI.spinner.off();
+              KAI.toastr.info("configuration sauvegardée");
+            })
+            .catch(function (err) {
+              KAI.spinner.off();
+              console.error(err);
+              KAI.toastr.warning("sauvegarde de la configuration impossible");
+            });
+        }
+        catch(err) {
+          KAI.spinner.off();
+          console.error(err);
+          KAI.toastr.warning("sauvegarde de la configuration impossible");
+        }
+      })
+      .catch(function (err) {
+        KAI.spinner.off();
+        console.error(err);
+        KAI.toastr.warning("sauvegarde de la configuration impossible");
+      });
   }
-
 }
 
 // -----------------------------------------------------------------

@@ -23,5 +23,6 @@
       "description": "Template"
     }
   },
-  "default_locale": "fr-FR"
+  "default_locale": "fr-FR",
+  "theme_color": "#B700DB"
 }
